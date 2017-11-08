@@ -29,7 +29,7 @@ module Scamander
     def offenses_to_s(scanner)
       offenses = []
       if scanner.offense_default_argument
-        offenses.push("hashes as default arguments")
+        offenses.push("hash as default argument")
       end
       if scanner.offense_unfrozen_string
         offenses.push("unfrozen string literals")
