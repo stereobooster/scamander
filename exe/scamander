@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require "scamander"
+
+# TODO: in all gems if Gemfile present and directories exist
+
+Scamander::Newt.new.scan(ARGV[0] || Dir.pwd)
