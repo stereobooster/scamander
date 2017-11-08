@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "scamander/version"
 require "parser/current"
 
@@ -19,24 +21,37 @@ module Scamander
       scanner = AstScanner.new
       scanner.check_strings = !magic_comment
       scanner.process(ast)
-      if scanner.offenses
-        puts filename
+      if scanner.offense_default_argument || scanner.offense_default_argument
+        puts "Found #{offenses_to_s(scanner)} in #{filename}"
       end
     end
 
+    def offenses_to_s(scanner)
+      offenses = []
+      if scanner.offense_default_argument
+        offenses.push("hashes as default arguments")
+      end
+      if scanner.offense_unfrozen_string
+        offenses.push("unfrozen string literals")
+      end
+      offenses.join(", ")
+    end
+
     class AstScanner < Parser::AST::Processor
-      attr_accessor :offenses, :check_strings
+      attr_accessor :offense_default_argument,
+        :offense_unfrozen_string,
+        :check_strings
 
       def on_def(node)
         if check_strings
-          self.offenses = self.offenses || look_for_strings(node)
+          self.offense_unfrozen_string = self.offense_unfrozen_string || look_for_strings(node)
         end
-        self.offenses = self.offenses || look_for_hash_defaults(node)
+        self.offense_default_argument = self.offense_default_argument || look_for_hash_defaults(node)
       end
 
       def on_send(node)
         if check_strings
-          self.offenses = self.offenses || look_for_strings(node)
+          self.offense_unfrozen_string = self.offense_unfrozen_string || look_for_strings(node)
         end
       end
 
