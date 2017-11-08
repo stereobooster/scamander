@@ -22,6 +22,7 @@ module Scamander
       scanner.check_strings = !magic_comment
       scanner.process(ast)
       if scanner.offense_default_argument || scanner.offense_default_argument
+        # TODO: print line number(s)
         puts "Found #{offenses_to_s(scanner)} in #{filename}"
       end
     end
