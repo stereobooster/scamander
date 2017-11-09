@@ -25,6 +25,9 @@ module Scamander
         # TODO: print line number(s)
         puts "Found #{offenses_to_s(scanner)} in #{filename}"
       end
+    rescue StandardError => e
+      puts "Error happened while checking #{filename}"
+      puts e.message
     end
 
     def offenses_to_s(scanner)
